@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DCDCDC"
+        android:orientation="vertical">
+
+        <!-- 1번 구성 : 영화 포스터 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_blue_dark">
+
+            <ImageView
+                android:id="@+id/img_poster"
+                android:layout_width="@dimen/size_poster_width"
+                android:layout_height="@dimen/size_poster_height"
+                android:layout_marginStart="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin10"
+                android:layout_marginBottom="@dimen/margin10"
+                android:src="@drawable/gundo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_title"
+                style="@style/TextStyle.White.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin12"
+                android:text="@string/gundo"
+                app:layout_constraintBottom_toBottomOf="@id/img_poster"
+                app:layout_constraintLeft_toRightOf="@id/img_poster"
+                app:layout_constraintTop_toTopOf="@id/img_poster"
+                app:layout_constraintVertical_bias="0.27" />
+
+            <ImageView
+                android:id="@+id/img_age"
+                android:layout_width="@dimen/size25"
+                android:layout_height="@dimen/size25"
+                android:layout_marginStart="@dimen/margin8"
+                android:src="@drawable/ic_15"
+                app:layout_constraintBottom_toBottomOf="@id/text_title"
+                app:layout_constraintLeft_toRightOf="@id/text_title"
+                app:layout_constraintTop_toTopOf="@id/text_title" />
+
+            <TextView
+                android:id="@+id/text_opening_day"
+                style="@style/TextStyle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin12"
+                android:text="@string/openingday"
+                app:layout_constraintLeft_toLeftOf="@id/text_title"
+                app:layout_constraintTop_toBottomOf="@id/text_title" />
+
+            <TextView
+                android:id="@+id/text_janre"
+                style="@style/TextStyle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/moviejanre"
+                app:layout_constraintLeft_toLeftOf="@id/text_title"
+                app:layout_constraintTop_toBottomOf="@id/text_opening_day" />
+
+            <ImageView
+                android:id="@+id/img_thumbup"
+                android:layout_width="@dimen/size25"
+                android:layout_height="@dimen/size25"
+                android:layout_marginTop="@dimen/margin20"
+                android:background="@drawable/thumbup"
+                app:layout_constraintLeft_toLeftOf="@id/text_title"
+                app:layout_constraintTop_toBottomOf="@id/text_janre" />
+
+            <TextView
+                android:id="@+id/text_thumbup"
+                style="@style/TextStyle.White.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin6"
+                android:text="@string/thumbup"
+                app:layout_constraintLeft_toRightOf="@id/img_thumbup"
+                app:layout_constraintTop_toTopOf="@id/img_thumbup" />
+
+            <ImageView
+                android:id="@+id/img_thumbdown"
+                android:layout_width="@dimen/size25"
+                android:layout_height="@dimen/size25"
+                android:layout_marginStart="@dimen/margin20"
+                android:layout_marginTop="@dimen/margin20"
+                android:background="@drawable/thumbdown"
+                app:layout_constraintLeft_toRightOf="@id/text_thumbup"
+                app:layout_constraintTop_toBottomOf="@id/text_janre" />
+
+            <TextView
+                android:id="@+id/text_thumbdown"
+                style="@style/TextStyle.White.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin6"
+                android:text="@string/thumbdown"
+                app:layout_constraintLeft_toRightOf="@id/img_thumbdown"
+                app:layout_constraintTop_toTopOf="@id/img_thumbdown" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 2번 구성 : 예매율 평점  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margindot5"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin10"
+                android:paddingBottom="@dimen/margin10">
+
+                <TextView
+                    android:id="@+id/text_bookrate"
+                    style="@style/TextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bookrate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_bookrate_number1"
+                    style="@style/TextStyle.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin6"
+                    android:text="@string/bookratenumber1"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/text_bookrate_number2"
+                    app:layout_constraintTop_toBottomOf="@id/text_bookrate" />
+
+                <TextView
+                    android:id="@+id/text_bookrate_number2"
+                    style="@style/TextStyle.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin6"
+                    android:layout_marginTop="@dimen/margin6"
+                    android:text="@string/bookratenumber2"
+                    app:layout_constraintLeft_toRightOf="@id/text_bookrate_number1"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_bookrate" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margindot5"
+                android:layout_marginRight="@dimen/margindot5"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin10"
+                android:paddingBottom="@dimen/margin10">
+
+                <TextView
+                    android:id="@+id/text_grade"
+                    style="@style/TextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grade"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatRatingBar
+                    android:id="@+id/rtbar_grade"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin6"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/text_grade_number"
+                    app:layout_constraintTop_toBottomOf="@id/text_grade" />
+
+                <TextView
+                    android:id="@+id/text_grade_number"
+                    style="@style/TextStyle.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin8"
+                    android:layout_marginTop="@dimen/margin6"
+                    android:text="@string/gradenumber"
+                    app:layout_constraintLeft_toRightOf="@id/rtbar_grade"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_grade" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margindot5"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin10"
+                android:paddingBottom="@dimen/margin10">
+
+                <TextView
+                    android:id="@+id/text_viewer"
+                    style="@style/TextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/viewer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_viewer_number"
+                    style="@style/TextStyle.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin6"
+                    android:text="@string/viewernumber"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_viewer" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <!-- 3번 구성 : 줄거리 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin10"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/margin8"
+            android:paddingTop="@dimen/margin8"
+            android:paddingBottom="@dimen/margin8">
+
+            <TextView
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/synopsis" />
+
+            <TextView
+                style="@style/TextStyle.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin8"
+                android:text="@string/synopsis_content" />
+
+        </LinearLayout>
+
+        <!-- 4번 구성 : 감독/출연 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin8"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/margin8">
+
+            <TextView
+                android:id="@+id/text_actordirector"
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin8"
+                android:layout_marginTop="@dimen/margin8"
+                android:text="@string/actordirector"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_director"
+                style="@style/TextStyle.Small.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin8"
+                android:text="@string/director"
+                app:layout_constraintLeft_toLeftOf="@id/text_actordirector"
+                app:layout_constraintTop_toBottomOf="@id/text_actordirector" />
+
+            <TextView
+                android:id="@+id/text_director_name"
+                style="@style/TextStyle.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin8"
+                android:text="@string/directorname"
+                app:layout_constraintLeft_toRightOf="@id/text_director"
+                app:layout_constraintTop_toTopOf="@id/text_director" />
+
+            <TextView
+                android:id="@+id/text_actor"
+                style="@style/TextStyle.Small.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin6"
+                android:text="@string/actor"
+                app:layout_constraintLeft_toLeftOf="@id/text_director"
+                app:layout_constraintTop_toBottomOf="@id/text_director" />
+
+            <TextView
+                android:id="@+id/text_actorr_name"
+                style="@style/TextStyle.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin6"
+                android:text="@string/actorname"
+                app:layout_constraintLeft_toRightOf="@id/text_actor"
+                app:layout_constraintTop_toTopOf="@id/text_actor" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 5번 구성 : 한줄평-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="@dimen/margin8"
+            android:background="@color/white"
+            android:paddingTop="@dimen/margin10"
+            android:paddingBottom="@dimen/margin10">
+
+            <TextView
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin8"
+                android:text="@string/linereview"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/margin8"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/ic_review_selected"
+                android:text="@string/writereview"
+                android:textColor="@android:color/holo_orange_dark"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin8"
+                android:layout_marginRight="@dimen/margin8"
+                android:background="@drawable/allreview"
+                android:text="@string/allreview"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 6번 구성 : 페북,카톡 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin8"
+            android:paddingTop="@dimen/margin8"
+            android:paddingBottom="@dimen/margin8"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/margin8">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin12"
+                android:src="@drawable/ic_facebook" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin10"
+                android:src="@drawable/ic_kakao" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_book"
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/margin12"
+                android:layout_marginRight="@dimen/margin12"
+                android:background="@drawable/book"
+                android:text="@string/book"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

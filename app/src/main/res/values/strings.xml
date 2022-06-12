@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">씨네마천국</string>
+
+
+    <!-- 임시로 쓰일 스트링 -->
+    <!-- 1번 구성 -->
+    <string name="gundo">군도</string>
+    <string name="openingday">2014.07.23 개봉</string>
+    <string name="moviejanre">액션/137분</string>
+    <string name="thumbup">15</string>
+    <string name="thumbdown">1</string>
+
+    <!-- 2번 구성 -->
+    <string name="bookrate">예매율</string>
+    <string name="bookratenumber1">5위</string>
+    <string name="bookratenumber2">1.8%</string>
+    <string name="grade">평점</string>
+    <string name="gradenumber">8.2</string>
+    <string name="viewer">누적관객수</string>
+    <string name="viewernumber">839,399명</string>
+
+
+    <!-- 3번 구성 -->
+    <string name="synopsis">줄거리</string>
+    <string name="synopsis_content">군도, 백성을 구하라\n양반과 탐관오리들의 ...\n힘 없는 백성의 편이 되어 세상을 ...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n시작하는데....</string>
+
+    <!-- 4번 구성 -->
+    <string name="actordirector">감독/출연</string>
+    <string name="director">감독</string>
+    <string name="directorname">윤종빈</string>
+    <string name="actor">출연</string>
+    <string name="actorname">하정우(도치), 강동원(조윤)</string>
+
+    <!-- 5번 구성 -->
+    <string name="linereview">한줄평</string>
+    <string name="writereview">작성하기</string>
+    <string name="allreview">모두보기</string>
+
+    <!-- 6번 구성 -->
+    <string name="book">예매하기</string>
+
+</resources>
