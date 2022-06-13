@@ -44,4 +44,16 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TextMini" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TextMini.Bold" parent="TextMini">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextMini.LightGray" parent="TextMini">
+        <item name="android:textColor">@android:color/darker_gray</item>
+    </style>
+
 </resources>

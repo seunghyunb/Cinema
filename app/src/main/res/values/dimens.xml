@@ -11,7 +11,7 @@
     <dimen name="margin16">16dp</dimen>
     <dimen name="margin20">20dp</dimen>
 
-    <dimen name="size25">30dp</dimen>
+    <dimen name="size30">30dp</dimen>
 
     <dimen name="size_poster_width">150dp</dimen>
     <dimen name="size_poster_height">210dp</dimen>

@@ -35,6 +35,11 @@
     <string name="linereview">한줄평</string>
     <string name="writereview">작성하기</string>
     <string name="allreview">모두보기</string>
+    <string name="reviewtime">10분전</string>
+    <string name="reviewcontent">적당히 재밌다. 오랜만에 잠 안오는 영화 봤네요</string>
+    <string name="reviewlike">추천</string>
+    <string name="reviewlikeCount">0</string>
+    <string name="reviewreport">신고하기</string>
 
     <!-- 6번 구성 -->
     <string name="book">예매하기</string>
