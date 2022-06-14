@@ -1,5 +1,6 @@
 package best.hyun.cinema
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -76,6 +77,8 @@ class MainActivity : AppCompatActivity() {
     private val thumbdownImg: ImageView by lazy { findViewById(R.id.img_thumbdown) }
     private val thumbupCount: TextView by lazy { findViewById(R.id.text_thumbup) }
     private val thumbdownCount: TextView by lazy { findViewById(R.id.text_thumbdown) }
+    private val showReviewListBtn: Button by lazy { findViewById(R.id.btn_show_reviewlist) }
+    private val writeReviewBtn: Button by lazy { findViewById(R.id.btn_review_write) }
     private var listView: ListView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,19 +94,19 @@ class MainActivity : AppCompatActivity() {
             likeStatus.changeStat(LIKESTAT.DISLIKE)
         }
 
-
         listView = findViewById(R.id.listview_review)
         val adapter = ReviewAdapter()
         adapter.addItem(1)
         listView!!.adapter = adapter
 
+        showReviewListBtn.setOnClickListener {
+            val intent = Intent(applicationContext, ReviewListActivity::class.java)
+            startActivity(intent)
+        }
 
-
-        // 임시로 작성하기 버튼으로 리스트 뷰 아이템 추가 기능 넣었음.
-        val b = findViewById<Button>(R.id.btn_review_write)
-        b.setOnClickListener {
-            adapter.addItem(2)
-            adapter.notifyDataSetChanged()
+        writeReviewBtn.setOnClickListener {
+            val intent = Intent(applicationContext, ReviewWriteActivity::class.java)
+            startActivity(intent)
         }
     }
 

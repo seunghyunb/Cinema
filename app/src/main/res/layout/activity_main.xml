@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DCDCDC"
+        android:background="@color/base_background"
         android:orientation="vertical">
 
         <!-- 1번 구성 : 영화 포스터 -->
@@ -372,6 +372,7 @@
                 app:layout_goneMarginRight="@dimen/margin8" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_show_reviewlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin8"

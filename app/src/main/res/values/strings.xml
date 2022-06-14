@@ -44,4 +44,15 @@
     <!-- 6번 구성 -->
     <string name="book">예매하기</string>
 
+
+    <!-- 한줄평 작성  -->
+    <string name="reviewwrite_label">한줄평 작성</string>
+    <string name="reviewwrite_grade">평점을 입력해 주세요</string>
+    <string name="reviewwrite_write_review">100자 이내로 작성해주세요</string>
+    <string name="save">저장</string>
+    <string name="cancel">취소</string>
+
+    <!-- 한줄평 목록  -->
+    <string name="reviewlist_label">한줄평 목록</string>
+
 </resources>
