@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
+    tools:context=".MovieFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_mv_poster"
+        android:layout_width="280dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/image1" />
+
+    <TextView
+        android:id="@+id/text_mv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:letterSpacing="0.1"
+        android:text="1.군도"
+        android:textColor="@color/white"
+        android:textSize="26dp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin10"
+        android:scaleType="center"
+        android:scaleX="0.3"
+        android:src="@drawable/home_slider1" />
+
+
+    <TextView
+        android:id="@+id/text_mv_info"
+        style="@style/TextStyle.White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin10"
+        android:text="예매율 51.6% | 15세 관람가 | D-1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_mv_detail"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin20"
+        android:background="@drawable/btn_orange_corner"
+        android:text="상세보기"
+        android:textColor="@color/white"
+        android:textSize="18dp" />
+
+
+</LinearLayout>
