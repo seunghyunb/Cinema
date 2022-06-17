@@ -420,9 +420,6 @@
                 android:background="@drawable/book"
                 android:text="@string/book"
                 android:textColor="@color/white" />
-
-
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

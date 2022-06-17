@@ -13,6 +13,7 @@
     <dimen name="margin20">20dp</dimen>
 
     <dimen name="size30">30dp</dimen>
+    <dimen name="size50">50dp</dimen>
 
     <dimen name="size_poster_width">150dp</dimen>
     <dimen name="size_poster_height">210dp</dimen>
