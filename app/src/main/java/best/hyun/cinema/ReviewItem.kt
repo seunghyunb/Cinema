@@ -18,7 +18,7 @@ class ReviewItem: ConstraintLayout {
     private fun initialize(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.list_item, this, true)
-        id = findViewById<TextView>(R.id.text_userid)
+        id = findViewById<TextView>(R.id.text_username)
     }
 
     fun setId(str: String) {

@@ -62,4 +62,8 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+
+    <!-- Base URL   -->
+    <string name="baseUrl">http://boostcourse-appapi.connect.or.kr:10000</string>
 </resources>

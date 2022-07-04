@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "poster"
-private const val ARG_PARAM2 = "title"
-private const val ARG_PARAM3 = "info"
+private const val ARG_PARAM1 = "id"
+private const val ARG_PARAM2 = "poster"
+private const val ARG_PARAM3 = "title"
+private const val ARG_PARAM4 = "info"
 
 /**
  * A simple [Fragment] subclass.
@@ -23,9 +25,23 @@ private const val ARG_PARAM3 = "info"
  */
 class MovieFragment : Fragment() {
 
-    private var resId: Int? = null
-    private var title: String? = null
-    private var info: String? = null
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: Int, param2: String, param3: String, param4: String) =
+            MovieFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                    putString(ARG_PARAM3, param3)
+                    putString(ARG_PARAM4, param4)
+                }
+            }
+    }
+
+    private var id: Int? = null // 영화 id(1)
+    private var imgSrc: String? = null // 이미지(image)
+    private var title: String? = null // 꾼(title)
+    private var info: String? = null // 예매율 61.69(reservation_rate)% | 15(grade)세 관람가
     private var fta: FragmentToActivity? = null
 
     override fun onAttach(context: Context) {
@@ -43,9 +59,10 @@ class MovieFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            resId = it.getInt(ARG_PARAM1)
-            title = it.getString(ARG_PARAM2)
-            info = it.getString(ARG_PARAM3)
+            id = it.getInt(ARG_PARAM1)
+            imgSrc = it.getString(ARG_PARAM2)
+            title = it.getString(ARG_PARAM3)
+            info = it.getString(ARG_PARAM4)
         }
     }
 
@@ -57,7 +74,7 @@ class MovieFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movie, container, false)
 
         val imgPoster = view.findViewById<ImageView>(R.id.img_mv_poster)
-        resId?.let { imgPoster.setImageResource(it) }
+        imgSrc?.let { Picasso.get().load(imgSrc).into(imgPoster) }
         val textTitle = view.findViewById<TextView>(R.id.text_mv_title)
         title?.let { textTitle.text = it }
         val textInfo = view.findViewById<TextView>(R.id.text_mv_info)
@@ -67,22 +84,13 @@ class MovieFragment : Fragment() {
         val btnDetail = view.findViewById<Button>(R.id.btn_mv_detail)
         btnDetail.setOnClickListener {
             fta?.let {
-                it.changeFragment("info")
+                // 영화 상세 정보 (1)
+                it.requestMovieInfo("info", id)
             }
         }
 
         return view
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: Int, param2: String, param3: String) =
-            MovieFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                    putString(ARG_PARAM3, param3)
-                }
-            }
-    }
+
 }

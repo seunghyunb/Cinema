@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:nestedScrollingEnabled="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +42,7 @@
                 app:layout_constraintVertical_bias="0.27" />
 
             <ImageView
-                android:id="@+id/img_age"
+                android:id="@+id/img_grade"
                 android:layout_width="@dimen/size30"
                 android:layout_height="@dimen/size30"
                 android:layout_marginStart="@dimen/margin8"
@@ -61,7 +62,7 @@
                 app:layout_constraintTop_toBottomOf="@id/text_title" />
 
             <TextView
-                android:id="@+id/text_janre"
+                android:id="@+id/text_ganre"
                 style="@style/TextStyle.White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +77,7 @@
                 android:layout_marginTop="@dimen/margin20"
                 android:background="@drawable/thumbup"
                 app:layout_constraintLeft_toLeftOf="@id/text_title"
-                app:layout_constraintTop_toBottomOf="@id/text_janre" />
+                app:layout_constraintTop_toBottomOf="@id/text_ganre" />
 
             <TextView
                 android:id="@+id/text_thumbup"
@@ -96,7 +97,7 @@
                 android:layout_marginTop="@dimen/margin20"
                 android:background="@drawable/thumbdown"
                 app:layout_constraintLeft_toRightOf="@id/text_thumbup"
-                app:layout_constraintTop_toBottomOf="@id/text_janre" />
+                app:layout_constraintTop_toBottomOf="@id/text_ganre" />
 
             <TextView
                 android:id="@+id/text_thumbdown"
@@ -137,7 +138,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/text_bookrate_number1"
+                    android:id="@+id/text_reservation_grade"
                     style="@style/TextStyle.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,18 +146,18 @@
                     android:text="@string/bookratenumber1"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/text_bookrate_number2"
+                    app:layout_constraintRight_toLeftOf="@id/text_reservation_rate"
                     app:layout_constraintTop_toBottomOf="@id/text_bookrate" />
 
                 <TextView
-                    android:id="@+id/text_bookrate_number2"
+                    android:id="@+id/text_reservation_rate"
                     style="@style/TextStyle.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin6"
                     android:layout_marginTop="@dimen/margin6"
                     android:text="@string/bookratenumber2"
-                    app:layout_constraintLeft_toRightOf="@id/text_bookrate_number1"
+                    app:layout_constraintLeft_toRightOf="@id/text_reservation_grade"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_bookrate" />
 
@@ -183,25 +184,25 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatRatingBar
-                    android:id="@+id/rtbar_grade"
+                    android:id="@+id/rtbar_info"
                     style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin6"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/text_grade_number"
+                    app:layout_constraintRight_toLeftOf="@id/text_audience_rating"
                     app:layout_constraintTop_toBottomOf="@id/text_grade" />
 
                 <TextView
-                    android:id="@+id/text_grade_number"
+                    android:id="@+id/text_audience_rating"
                     style="@style/TextStyle.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/margin8"
                     android:layout_marginTop="@dimen/margin6"
                     android:text="@string/gradenumber"
-                    app:layout_constraintLeft_toRightOf="@id/rtbar_grade"
+                    app:layout_constraintLeft_toRightOf="@id/rtbar_info"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_grade" />
 
@@ -228,7 +229,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/text_viewer_number"
+                    android:id="@+id/text_audience"
                     style="@style/TextStyle.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -259,6 +260,7 @@
                 android:text="@string/synopsis" />
 
             <TextView
+                android:id="@+id/text_synopsis"
                 style="@style/TextStyle.Small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -323,8 +325,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin6"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/actorname"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toRightOf="@id/text_actor"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/text_actor" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -364,7 +370,7 @@
             <ListView
                 android:id="@+id/listview_review"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="242dp"
                 android:layout_marginLeft="@dimen/margin8"
                 app:layout_constraintLeft_toLeftOf="@id/text_review"
                 app:layout_constraintRight_toRightOf="@id/btn_review_write"
