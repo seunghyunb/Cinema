@@ -14,9 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import best.hyun.cinema.dto.CommentListResult
-import best.hyun.cinema.dto.MovieInfo
-import best.hyun.cinema.dto.MovieListResult
+import best.hyun.cinema.dto.*
 import best.hyun.cinema.retrofit.CommentListAPI
 import best.hyun.cinema.retrofit.MovieInfoAPI
 import best.hyun.cinema.retrofit.MovieListAPI
@@ -28,7 +26,6 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 /*
     영화 목록 화면을 담당한다.
 */
-
 
 class MovieListActivity : AppCompatActivity(), FragmentToActivity,
     NavigationView.OnNavigationItemSelectedListener {
@@ -79,6 +76,7 @@ class MovieListActivity : AppCompatActivity(), FragmentToActivity,
             page.translationX = -scale * 80.0f * position // 80dp 만큼 이동시켜 현재 화면에 일부가 보이도록 만든다.
         }
 
+        // 영화 목록 요청하기
         requestMovieList()
     }
 
@@ -87,106 +85,159 @@ class MovieListActivity : AppCompatActivity(), FragmentToActivity,
     }
 
 
-    // 영화 목록 아이템 가져오기
+    // 영화 목록 요청하기
     private fun requestMovieList() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(resources.getString(R.string.baseUrl))
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        if (NetworkManager.checkNetwork(this)) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(resources.getString(R.string.baseUrl))
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
 
-        val movieListAPI: MovieListAPI = retrofit.create(MovieListAPI::class.java)
-        val call = movieListAPI.readMovieList()
-        call.enqueue(
-            object : Callback<MovieListResult> {
-                override fun onResponse(
-                    call: Call<MovieListResult>,
-                    response: Response<MovieListResult>
-                ) {
-                    if (!response.isSuccessful) {
-                        Log.d(TAG, "${call.request().url()}: failed: ${response.code()}")
-                        return
-                    }
+            val movieListAPI: MovieListAPI = retrofit.create(MovieListAPI::class.java)
+            val call = movieListAPI.readMovieList()
+            call.enqueue(
+                object : Callback<MovieListResult> {
+                    override fun onResponse(
+                        call: Call<MovieListResult>,
+                        response: Response<MovieListResult>
+                    ) {
+                        if (!response.isSuccessful) {
+                            Log.d(TAG, "${call.request().url()}: failed: ${response.code()}")
+                            return
+                        }
 
-                    val movieListResult = response.body()
+                        val movieListResult = response.body()
 
-                    if (movieListResult != null) {
-                        if (movieListResult.result.isNotEmpty()) {
-                            for (movie in movieListResult.result) {
-                                pagerAdapter?.addItem(
-                                    MovieFragment.newInstance(
-                                        movie.id,
-                                        movie.image,
-                                        movie.title,
-                                        "예매율 ${movie.reservation_rate}% | ${movie.grade}세 관람가"
+                        if (movieListResult != null) {
+                            if (movieListResult.result.isNotEmpty()) {
+
+                                // 영화 목록 로컬 저장하기 (1)
+                                saveLocalMovieList(movieListResult.result)
+
+                                for (movie in movieListResult.result) {
+                                    pagerAdapter?.addItem(
+                                        MovieFragment.newInstance(
+                                            movie.id,
+                                            movie.image,
+                                            movie.title,
+                                            "예매율 ${movie.reservation_rate}% | ${movie.grade}세 관람가"
+                                        )
                                     )
-                                )
+                                }
+                                pagerAdapter?.notifyDataSetChanged()
                             }
-                            pagerAdapter?.notifyDataSetChanged()
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<MovieListResult>, t: Throwable) {
-                    Log.d(TAG, "${call.request().url()}: Fail: $t")
+                    override fun onFailure(call: Call<MovieListResult>, t: Throwable) {
+                        Log.d(TAG, "${call.request().url()}: Fail: $t")
+                    }
                 }
-            }
-        )
+            )
+        } else {
+            Thread {
+                val db = AppDatabase.getInstance(applicationContext)
+                val movieDao = db.movieDao()
+                val movies = movieDao.getAllMovies()
+                for (movie in movies) {
+                    pagerAdapter?.addItem(
+                        MovieFragment.newInstance(
+                            movie.id,
+                            movie.image,
+                            movie.title,
+                            "예매율 ${movie.reservation_rate}% | ${movie.grade}세 관람가"
+                        )
+                    )
+                }
+                pagerAdapter?.notifyDataSetChanged()
+            }.start()
+        }
+
+    }
+
+    //영화 목록 로컬 저장하기 (1)
+    fun saveLocalMovieList(list: List<Movie>) {
+        Thread {
+            val db = AppDatabase.getInstance(applicationContext)
+            val movieDao = db.movieDao()
+            movieDao.insertMovieList(list)
+        }.start()
     }
 
     // 영화 상세 정보 (3)
     // 영화 상세 정보 서버로 부터 받아오기
     private fun requestMovie(id: Int) {
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(resources.getString(R.string.baseUrl))
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build() // Retrofit 객체 생성
-        val movieInfoAPI: MovieInfoAPI = retrofit.create(MovieInfoAPI::class.java) // 인터페이스 객체 생성
-        val call: Call<MovieInfo> = movieInfoAPI.readMovie(id) // Call 객체 생성
-        call.enqueue(
-            object : Callback<MovieInfo> {
-                override fun onResponse(call: Call<MovieInfo>, response: Response<MovieInfo>) {
-                    Log.d(
-                        TAG,
-                        "\nonResponse의 Call 객체\nCall<MovieInfo>\n$call\nResponse<MovieInfo>\n$response"
+
+        if (NetworkManager.checkNetwork(this)) {
+            val retrofit: Retrofit = Retrofit.Builder()
+                .baseUrl(resources.getString(R.string.baseUrl))
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build() // Retrofit 객체 생성
+            val movieInfoAPI: MovieInfoAPI =
+                retrofit.create(MovieInfoAPI::class.java) // 인터페이스 객체 생성
+            val call: Call<MovieInfo> = movieInfoAPI.readMovie(id) // Call 객체 생성
+            call.enqueue(
+                object : Callback<MovieInfo> {
+                    override fun onResponse(call: Call<MovieInfo>, response: Response<MovieInfo>) {
+                        Log.d(
+                            TAG,
+                            "\nonResponse의 Call 객체\nCall<MovieInfo>\n$call\nResponse<MovieInfo>\n$response"
+                        )
+                        if (!response.isSuccessful)
+                            return
+
+                        val movieInfo = response.body() ?: return
+                        val movie = movieInfo.result[0]
+
+                        saveLocalMovie(movie)
+
+                        val fm = supportFragmentManager
+                        fm.beginTransaction()
+                            .replace(
+                                R.id.container,
+                                MovieInfoFragment.newInstance(movie),
+                                movie.title
+                            )
+                            .commit()
+
+                        nowMovieTitle = movie.title
+                        isInfo = true
+                    }
+
+                    override fun onFailure(call: Call<MovieInfo>, t: Throwable) {
+                        Log.e(TAG, "requestMovie Fail >> $t")
+                    }
+                }
+            )
+        } else {
+            Thread {
+                val db = AppDatabase.getInstance(applicationContext)
+                val movieDao = db.movieDao()
+                val movie = movieDao.getMovie(id)
+
+                val fm = supportFragmentManager
+                fm.beginTransaction()
+                    .replace(
+                        R.id.container,
+                        MovieInfoFragment.newInstance(movie),
+                        movie.title
                     )
-                    if (!response.isSuccessful)
-                        return
+                    .commit()
 
-                    val movieInfo = response.body() ?: return
-                    val movie = movieInfo.result[0]
-
-                    val fm = supportFragmentManager
-                    fm.beginTransaction()
-                        .replace(R.id.container, MovieInfoFragment.newInstance(movie), movie.title)
-                        .commit()
-
-                    nowMovieTitle = movie.title
-                    isInfo = true
-                }
-
-                override fun onFailure(call: Call<MovieInfo>, t: Throwable) {
-                    Log.e(TAG, "requestMovie Fail >> $t")
-                }
-            }
-        )
-
-
+                nowMovieTitle = movie.title
+                isInfo = true
+            }.start()
+        }
     }
 
-    // 프래그먼트에서 다른 액티비티로 이동하는 일을 담당한다
-    override fun moveActivity(name: String, bundle: Bundle?) {
-        startActivity(Intent().apply {
-            component = ComponentName(packageName, name)
-            addFlags(
-                Intent.FLAG_ACTIVITY_SINGLE_TOP or
-                        Intent.FLAG_ACTIVITY_CLEAR_TOP
-            )
-            if (bundle != null) {
-                putExtras(bundle)
-            }
-        })
+    fun saveLocalMovie(movie: Movie) {
+        Thread {
+            val db = AppDatabase.getInstance(applicationContext)
+            val movieDao = db.movieDao()
+            movieDao.insertMovie(movie)
+        }.start()
     }
 
     // 영화 상세화면과 영화 목록 화면을 띄우는 일을 담당한다.
@@ -215,33 +266,75 @@ class MovieListActivity : AppCompatActivity(), FragmentToActivity,
 
     // 한줄평 2개 가져오기 (2)
     override fun requestComment(id: Int, limit: Int, title: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(resources.getString(R.string.baseUrl))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val commentListAPI = retrofit.create(CommentListAPI::class.java)
-        val call = commentListAPI.readComment(id, limit)
-        call.enqueue(
-            object : Callback<CommentListResult> {
-                override fun onResponse(
-                    call: Call<CommentListResult>,
-                    response: Response<CommentListResult>
-                ) {
-                    val commentListResult = response.body() ?: return
-                    val commentList = commentListResult.result
-                    val fragment =
-                        supportFragmentManager.findFragmentByTag(title) as? MovieInfoFragment
-                    if (fragment != null) {
-                        for (comment in commentList) {
-                            // 한줄평 2개 가져오기 (3)
-                            fragment.addReview(comment)
+        if (NetworkManager.checkNetwork(this)) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(resources.getString(R.string.baseUrl))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val commentListAPI = retrofit.create(CommentListAPI::class.java)
+            val call = commentListAPI.readComment(id, limit)
+            call.enqueue(
+                object : Callback<CommentListResult> {
+                    override fun onResponse(
+                        call: Call<CommentListResult>,
+                        response: Response<CommentListResult>
+                    ) {
+                        val commentListResult = response.body() ?: return
+                        val commentList = commentListResult.result
+
+                        saveLocalComments(commentList)
+
+                        val fragment =
+                            supportFragmentManager.findFragmentByTag(title) as? MovieInfoFragment
+                        if (fragment != null) {
+                            for (comment in commentList) {
+                                // 한줄평 2개 가져오기 (3)
+                                fragment.addReview(comment)
+                            }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<CommentListResult>, t: Throwable) {}
+                    override fun onFailure(call: Call<CommentListResult>, t: Throwable) {}
+                }
+            )
+        } else {
+            Thread {
+                val db = AppDatabase.getInstance(applicationContext)
+                val commentDao = db.commentDao()
+                val comments = commentDao.getComments(id)
+
+                val fragment =
+                    supportFragmentManager.findFragmentByTag(title) as? MovieInfoFragment
+                if (fragment != null) {
+                    for (comment in comments ) {
+                        // 한줄평 2개 가져오기 (3)
+                        fragment.addReview(comment)
+                    }
+                }
+            }.start()
+        }
+    }
+
+    private fun saveLocalComments(comments: List<Comment>) {
+        Thread {
+            val db = AppDatabase.getInstance(applicationContext)
+            val commentDao = db.commentDao()
+            commentDao.insertCommentList(comments)
+        }.start()
+    }
+
+    // 프래그먼트에서 다른 액티비티로 이동하는 일을 담당한다
+    override fun moveActivity(name: String, bundle: Bundle?) {
+        startActivity(Intent().apply {
+            component = ComponentName(packageName, name)
+            addFlags(
+                Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP
+            )
+            if (bundle != null) {
+                putExtras(bundle)
             }
-        )
+        })
     }
 
     // 네비게이션 메뉴 선택시 동작함

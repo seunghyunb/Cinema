@@ -1,11 +1,14 @@
 package best.hyun.cinema.dto
 
-import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
+@Entity
 @Parcelize
 data class Movie(
+    @PrimaryKey
     var id: Int,
     var title: String,
     var date: String,

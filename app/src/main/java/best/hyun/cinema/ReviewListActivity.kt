@@ -3,6 +3,8 @@ package best.hyun.cinema
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -73,34 +75,62 @@ class ReviewListActivity : AppCompatActivity() {
 
     // 한줄평 모두 보기 (3)
     private fun requestComment(id: Int) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(resources.getString(R.string.baseUrl))
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val commentListAPI = retrofit.create(CommentListAPI::class.java)
-        val call = commentListAPI.readComment(id, 100)
-        call.enqueue(
-            object : Callback<CommentListResult> {
-                override fun onResponse(
-                    call: Call<CommentListResult>,
-                    response: Response<CommentListResult>
-                ) {
-                    val commentListResult = response.body() ?: return
-                    val commentList = commentListResult.result
-                    val totalCount = commentListResult.totalCount
-                    audience.text = "(${DecimalFormat("#,###").format(totalCount)}명 참여)"
+        if (NetworkManager.checkNetwork(this)) {
+            val retrofit = Retrofit.Builder()
+                .baseUrl(resources.getString(R.string.baseUrl))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            val commentListAPI = retrofit.create(CommentListAPI::class.java)
+            val call = commentListAPI.readComment(id, 100)
+            call.enqueue(
+                object : Callback<CommentListResult> {
+                    override fun onResponse(
+                        call: Call<CommentListResult>,
+                        response: Response<CommentListResult>
+                    ) {
+                        val commentListResult = response.body() ?: return
+                        val comments = commentListResult.result
 
-                    if (adapter == null)
-                        return
+                        saveLocalComments(comments)
 
-                    for (comment in commentList)
+                        val totalCount = commentListResult.totalCount
+                        audience.text = "(${DecimalFormat("#,###").format(totalCount)}명 참여)"
+
+                        if (adapter == null)
+                            return
+
+                        for (comment in comments)
+                            adapter!!.addItem(comment)
+                    }
+
+                    override fun onFailure(call: Call<CommentListResult>, t: Throwable) {}
+                }
+            )
+        } else {
+            Thread {
+                val db = AppDatabase.getInstance(applicationContext)
+                val commentDao = db.commentDao()
+                val comments = commentDao.getAllComments(id)
+                val totalCount = comments.size
+                if (adapter != null) {
+                    for (comment in comments)
                         adapter!!.addItem(comment)
                 }
-
-                override fun onFailure(call: Call<CommentListResult>, t: Throwable) {}
-            }
-        )
+                Handler(Looper.getMainLooper()).post {
+                    audience.text = "${DecimalFormat("#,###").format(totalCount)}"
+                }
+            }.start()
+        }
     }
+
+    private fun saveLocalComments(comments: List<Comment>) {
+        Thread {
+            val db = AppDatabase.getInstance(applicationContext)
+            val commentDao = db.commentDao()
+            commentDao.insertCommentList(comments)
+        }.start()
+    }
+
 
     inner class CommentAdapter : BaseAdapter() {
         private val items = ArrayList<Comment>()
