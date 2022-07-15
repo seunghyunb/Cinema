@@ -343,6 +343,10 @@ class MovieListActivity : AppCompatActivity(), FragmentToActivity,
             R.id.menu_movie_list -> {
                 requestMovieInfo("list")
             }
+
+            R.id.menu_movie_buy -> {
+                startActivity(Intent(applicationContext, PictureActivity::class.java))
+            }
         }
 
         drawer.closeDrawer(GravityCompat.START)

@@ -63,7 +63,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/img_age"
+                android:id="@+id/img_grade"
                 android:layout_width="@dimen/size30"
                 android:layout_height="@dimen/size30"
                 android:layout_marginLeft="@dimen/margin10"
@@ -82,18 +82,21 @@
             android:paddingBottom="@dimen/margin8">
 
             <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/rtbar_review_list"
                 style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin4" />
 
             <TextView
+                android:id="@+id/text_audience_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/margin8"
                 android:text="8.2" />
 
             <TextView
+                android:id="@+id/text_audience"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="(1,142참여)" />
@@ -135,11 +138,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginLeft="@dimen/margin8"
+                android:layout_marginRight="@dimen/margin8"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/text_review"
                 app:layout_constraintRight_toRightOf="@id/btn_review_write"
-                app:layout_constraintTop_toBottomOf="@id/btn_review_write"
-                app:layout_goneMarginRight="@dimen/margin8" />
+                app:layout_constraintTop_toBottomOf="@id/btn_review_write" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

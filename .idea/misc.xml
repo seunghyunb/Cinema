@@ -12,13 +12,17 @@
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/drawable/reviewwrite_edit.xml" value="0.1845" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/drawable/thumbdown.xml" value="0.226" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/drawable/thumbup.xml" value="0.226" />
+        <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_image.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_main.xml" value="0.2573623559539053" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_movie_info.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_movie_list.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_photo.xml" value="0.1" />
+        <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_picture.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_review_list.xml" value="0.264" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/activity_review_write.xml" value="0.25" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/fragment_movie.xml" value="0.264" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/fragment_movie_info.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/item_photo.xml" value="0.1" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/list_item.xml" value="0.4" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/nav_header.xml" value="0.264" />
         <entry key="..\:/Users/BAEK/AndroidProjects/Cinema/app/src/main/res/layout/thumbup.xml" value="0.30520833333333336" />

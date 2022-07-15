@@ -7,17 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import best.hyun.cinema.dto.Comment
 import best.hyun.cinema.dto.Movie
 import best.hyun.cinema.dto.SimpleStatus
 import best.hyun.cinema.retrofit.LikeDisLikeAPI
+import com.github.chrisbanes.photoview.PhotoView
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.StringBuilder
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,8 +46,9 @@ class MovieInfoFragment : Fragment() {
     private lateinit var listView: ListView
     private lateinit var reviewAdapter: ReviewAdapter
 
+    private lateinit var gallery: RecyclerView
+    private lateinit var galleryAdapter: GalleryAdapter
 
-    private val likeStatus = LikeStatus()
     private lateinit var thumbupImg: ImageView
     private lateinit var thumbdownImg: ImageView
     private lateinit var thumbupCount: TextView
@@ -85,6 +91,13 @@ class MovieInfoFragment : Fragment() {
         thumbdownCount = view.findViewById(R.id.text_thumbdown)
         showReviewListBtn = view.findViewById(R.id.btn_show_reviewlist)
         writeReviewBtn = view.findViewById(R.id.btn_review_write)
+        gallery = view.findViewById(R.id.gallery)
+        gallery.layoutManager = LinearLayoutManager(requireContext()).apply {
+            orientation = LinearLayoutManager.HORIZONTAL
+        }
+        galleryAdapter = GalleryAdapter()
+        gallery.adapter = galleryAdapter
+
 
         val poster = view.findViewById<ImageView>(R.id.img_poster)
         val title = view.findViewById<TextView>(R.id.text_title)
@@ -115,6 +128,12 @@ class MovieInfoFragment : Fragment() {
             audienceRating.text = "${String.format("%.2f", movie!!.audience_rating)}"
             audience.text = "${DecimalFormat("#,###").format(movie!!.audience)}명"
             rtbar.rating = (movie!!.audience_rating) / 2
+            val photos = movie!!.photos?.split(",")
+            if (photos != null) {
+                for(item in photos) {
+                    galleryAdapter.addItem(item)
+                }
+            }
 
             // 한줄평 2개 가져오기 (1)
             fta?.requestComment(movie!!.id, 2, movie!!.title)
@@ -204,6 +223,9 @@ class MovieInfoFragment : Fragment() {
         listView = view.findViewById(R.id.listview_review)
         reviewAdapter = ReviewAdapter()
         listView.adapter = reviewAdapter
+
+
+
 
         return view
     }
@@ -297,64 +319,39 @@ class MovieInfoFragment : Fragment() {
         }
     }
 
-    enum class LIKESTAT { LIKE, DISLIKE }
-    inner class LikeStatus(
-        public var up: Boolean = false,
-        private var down: Boolean = false,
-        private var upCount: Int = 15,
-        private var downCount: Int = 1
-    ) {
-        fun changeStat(stat: LIKESTAT) {
-            if (stat == LIKESTAT.LIKE) { // up 버튼에서 눌렀을 때
-                if (up) { // up이 true 인 상태, up을 취소시키는 일을 해야함.
-                    // 1. 업의 상태 변경 -> 중복 코드
-                    // 2. 숫자를 감소시킨다
-                    // 3. 감소된 숫자를 텍스트 뷰에 설정한다.
-                    // 4. 업의 이미지를 기본으로 바꿔준다.
-                    up = !up
-                    upCount -= 1
-                    thumbupCount.text = upCount.toString()
-                    thumbupImg.setImageResource(R.drawable.ic_thumb_up)
-                } else { // up이 false 인 상태
-                    // 1. 업의 상태 변경 -> 중복 코드
-                    // 2. 숫자를 증가 시키고 텍스트 뷰에 설정한다.
-                    // 3. 업의 이미지를 바꿔준다.
-                    // 4. down 상태 체크
-                    // 5. down 이 true면 down 상태 변경
-                    // 6. down 숫자 감소
-                    // 7. down 이미지 기본으로 변경
-                    up = !up
-                    upCount += 1
-                    thumbupCount.text = upCount.toString()
-                    thumbupImg.setImageResource(R.drawable.ic_thumb_up_selected)
-                    if (down) { // down이 true 면 false로 바꿔야함.
-                        down = !down
-                        downCount -= 1
-                        thumbdownCount.text = downCount.toString()
-                        thumbdownImg.setImageResource(R.drawable.ic_thumb_down)
-                    }
-                }
-            } else { // down 버튼에서 눌렀을 때, up 다운만 반대로 넣어주면 됨
-                if (down) {
-                    down = !down
-                    downCount -= 1
-                    thumbdownCount.text = downCount.toString()
-                    thumbdownImg.setImageResource(R.drawable.ic_thumb_down)
-                } else {
-                    down = !down
-                    downCount += 1
-                    thumbdownCount.text = downCount.toString()
-                    thumbdownImg.setImageResource(R.drawable.ic_thumb_down_selected)
-                    if (up) { // down이 true 면 false로 바꿔야함.
-                        up = !up
-                        upCount -= 1
-                        thumbupCount.text = upCount.toString()
-                        thumbupImg.setImageResource(R.drawable.ic_thumb_up)
-                    }
-                }
+    class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+        private val items: ArrayList<String> = arrayListOf()
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val img: ImageView
+
+            init {
+                img = view.findViewById(R.id.img_photo_item)
             }
+
+        }
+
+        // ViewHolder를 새로 만들어야 할 때마다 이 메서드를 호출한다.
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+
+            return ViewHolder(view)
+        }
+
+        // ViewHolder를 데이터와 연결할 때 호출
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            Picasso.get().load(items[position]).into(holder.img)
+        }
+
+        // 데이터 세트 크기를 가져올 때 호출
+        override fun getItemCount(): Int {
+            return items.size
+        }
+
+        fun addItem(item: String) {
+            items.add(item)
         }
     }
-
 
 }

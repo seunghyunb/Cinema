@@ -335,6 +335,27 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 갤러리 추가 구성 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin8"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextStyle.Bold.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="갤러리" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
         <!-- 5번 구성 : 한줄평-->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
