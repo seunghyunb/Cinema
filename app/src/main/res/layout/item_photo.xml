@@ -8,4 +8,12 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/image11" />
+
+    <ImageView
+        android:id="@+id/img_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:src="@drawable/ic_play_32"
+        android:visibility="invisible"/>
 </FrameLayout>

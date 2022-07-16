@@ -2,12 +2,10 @@ package best.hyun.cinema
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,14 +13,12 @@ import best.hyun.cinema.dto.Comment
 import best.hyun.cinema.dto.Movie
 import best.hyun.cinema.dto.SimpleStatus
 import best.hyun.cinema.retrofit.LikeDisLikeAPI
-import com.github.chrisbanes.photoview.PhotoView
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.StringBuilder
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -129,11 +125,17 @@ class MovieInfoFragment : Fragment() {
             audience.text = "${DecimalFormat("#,###").format(movie!!.audience)}명"
             rtbar.rating = (movie!!.audience_rating) / 2
             val photos = movie!!.photos?.split(",")
+            val videos = movie!!.videos?.split(",")
             if (photos != null) {
-                for(item in photos) {
-                    galleryAdapter.addItem(item)
-                }
+                for (item in photos)
+                    galleryAdapter.addPhotos(item)
             }
+
+            if (videos != null) {
+                for (item in videos)
+                    galleryAdapter.addVideos(item)
+            }
+
 
             // 한줄평 2개 가져오기 (1)
             fta?.requestComment(movie!!.id, 2, movie!!.title)
@@ -319,14 +321,17 @@ class MovieInfoFragment : Fragment() {
         }
     }
 
-    class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
-        private val items: ArrayList<String> = arrayListOf()
+    inner class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+        private val photos: ArrayList<String> = arrayListOf()
+        private val videos: ArrayList<String> = arrayListOf()
 
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val img: ImageView
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val photo: ImageView
+            val play: ImageView
 
             init {
-                img = view.findViewById(R.id.img_photo_item)
+                photo = view.findViewById(R.id.img_photo_item)
+                play = view.findViewById(R.id.img_play)
             }
 
         }
@@ -341,16 +346,33 @@ class MovieInfoFragment : Fragment() {
 
         // ViewHolder를 데이터와 연결할 때 호출
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            Picasso.get().load(items[position]).into(holder.img)
+            if (position < photos.size) {
+                Picasso.get().load(photos[position]).into(holder.photo)
+                holder.photo.setOnClickListener {
+                    fta?.let {
+                        val bundle = Bundle().apply {
+                            putString("url", photos[position])
+                        }
+                        it.moveActivity("best.hyun.cinema.PhotoActivity", bundle)
+                    }
+                }
+            } else {
+                holder.play.visibility = View.VISIBLE
+                // TODO 비디오 url을 썸네일 링크로 변환하는 작업이 필요, 비디오 url은 유튜브 연결할 때 쓰기, SUMMARY 참고하기
+            }
         }
 
         // 데이터 세트 크기를 가져올 때 호출
         override fun getItemCount(): Int {
-            return items.size
+            return photos.size + videos.size
         }
 
-        fun addItem(item: String) {
-            items.add(item)
+        fun addPhotos(item: String) {
+            photos.add(item)
+        }
+
+        fun addVideos(item: String) {
+            videos.add(item)
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.ScaleGestureDetector
 import android.widget.ImageView
 import androidx.core.view.ViewCompat
 import com.github.chrisbanes.photoview.PhotoView
+import com.squareup.picasso.Picasso
 
 class PictureActivity : AppCompatActivity() {
 
@@ -20,7 +21,11 @@ class PictureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo)
 
+        val bundle = intent.extras
+        val url = bundle?.getString("url")
+
         val photoView = findViewById<PhotoView>(R.id.img_photo)
+        Picasso.get().load(url).into(photoView)
     }
 
 }
